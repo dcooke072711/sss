@@ -9,7 +9,7 @@ local player = players.LocalPlayer
 local categoryDragging = false
 
 local Bleachhack = {}; Bleachhack.__index = Bleachhack
-local objects = (runService:IsStudio() and game:GetService("ReplicatedStorage"):FindFirstChild("Bleachhack") or game:GetObjects("rbxassetid://86172980298237")[1]):Clone()
+local objects = (runService:IsStudio() and game:GetService("ReplicatedStorage"):FindFirstChild("BleachhackRemake") or game:GetObjects("rbxassetid://86172980298237")[1]):Clone()
 
 local IS_STUDIO = runService:IsStudio()
 local indent = " "
@@ -403,8 +403,8 @@ local Category = {}; Category.__index = Category; do
 end
 
 function Bleachhack:Create()
-	local self = setmetatable({}, Bleachhack)
-	self.UI = objects.Bleachhack:Clone()
+	local self = setmetatable({}, BleachhackRemake)
+	self.UI = objects.BleachhackRemake:Clone()
 	self.UI.Parent = IS_STUDIO and player.PlayerGui or ((gethui and gethui()) or game:GetService("CoreGui"))
 	self.Categories = {}
 	
