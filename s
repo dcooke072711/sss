@@ -435,8 +435,8 @@ function Bleachhack:Create()
 		local pingColor = valueToColor(ping * 500, 200)
 		local fpsColor = valueToColor2(fps, 60)
 		self.UI.ModulesList.Bar.BackgroundColor3 = chroma
-		self.UI.Server.Ping.Text = '<stroke thickness="1"><font color="#dbd9d9">Ping: </font><font color="rgb('..pingColor[1]..","..pingColor[2]..","..pingColor[3]..')">'..math.round(ping * 500).."</font></stroke>"
-		self.UI.Server.FPS.Text = '<stroke thickness="1"><font color="#dbd9d9">FPS: </font><font color="rgb('..fpsColor[1]..","..fpsColor[2]..","..fpsColor[3]..')">'..fps.."</font></stroke>"
+		self.UI.Server.Ping.Text = '<stroke thickness="1"><font color="#ff6f00">Ping: </font><font color="rgb('..pingColor[1]..","..pingColor[2]..","..pingColor[3]..')">'..math.round(ping * 500).."</font></stroke>"
+		self.UI.Server.FPS.Text = '<stroke thickness="1"><font color="#ff6f00">FPS: </font><font color="rgb('..fpsColor[1]..","..fpsColor[2]..","..fpsColor[3]..')">'..fps.."</font></stroke>"
 		for index, element in pairs(self.UI.ModulesList.List:GetChildren()) do
 			if not element:IsA("TextLabel") then continue end
 			element.TextColor3 = chroma
