@@ -12,11 +12,10 @@ local Bleachhack = {}; Bleachhack.__index = Bleachhack
 local objects = (runService:IsStudio() and game:GetService("ReplicatedStorage"):FindFirstChild("Bleachhack") or game:GetObjects("rbxassetid://92812375160150")[1]):Clone()
 
 local IS_STUDIO = runService:IsStudio()
-local indent = " "
+local indent = "  "
 
 local clickId = "rbxassetid://535716488"
 local ping = 0.15
-
 local fps = 0
 
 function playSound(id, vol)
@@ -29,37 +28,33 @@ function playSound(id, vol)
 	debris:AddItem(sound, 3)
 end
 
-function getRainbowColor()
+function getHalloweenColor()
 	local epochTime = os.clock() * 100
 	local hue = (epochTime % 360)
-
-	local color = Color3.fromHSV(hue / 360, 1, 1)
-
-	return color
+	local halloweenColors = {
+		Color3.fromRGB(255, 147, 0), -- Orange
+		Color3.fromRGB(128, 0, 128), -- Purple
+		Color3.fromRGB(0, 255, 0),   -- Neon Green
+		Color3.fromRGB(0, 0, 0)      -- Black
+	}
+	return halloweenColors[math.floor((hue / 360) * #halloweenColors) + 1]
 end
 
 function valueToColor(value, max_value)
 	value = math.max(0, math.min(value, max_value))
-
 	local red = math.floor((value / max_value) * 255)
-	local green = math.floor((1 - (value / max_value)) * 255)
-
-	local blue = 0
-
+	local green = math.floor((1 - (value / max_value)) * 128)
+	local blue = 128
 	return {red, green, blue}
 end
 
 function valueToColor2(value, max_value)
 	value = math.max(0, math.min(value, max_value))
-
 	local red = math.floor((1 - (value / max_value)) * 255)
-	local green = math.floor((value / max_value) * 255)
-
-	local blue = 0
-
+	local green = math.floor((value / max_value) * 128)
+	local blue = 128
 	return {red, green, blue}
 end
-
 
 function getPing()
 	return statsService.PerformanceStats.Ping:GetValue()
@@ -84,6 +79,8 @@ local Category = {}; Category.__index = Category; do
 			self.Root = root
 			self.UI = objects.Module:Clone()
 			self.UI.Module.Text = indent..title
+			self.UI.Module.TextColor3 = Color3.fromRGB(255, 147, 0) -- Halloween Orange
+			self.UI.Module.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			self.UI.Parent = root.UI.List
 			self.Value = false
 			self.Settings = {}
@@ -91,6 +88,7 @@ local Category = {}; Category.__index = Category; do
 			local moduleTextLabel = objects.ModuleList:Clone()
 			moduleTextLabel.Visible = false
 			moduleTextLabel.Text = indent..title
+			moduleTextLabel.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
 			moduleTextLabel.Parent = self.Root.Root.UI.ModulesList.List
 			moduleTextLabel.Size = UDim2.new(0, 12 * #title, 0, 25)
 			
@@ -99,11 +97,12 @@ local Category = {}; Category.__index = Category; do
 			self.TextLabel = moduleTextLabel
 			
 			self.UI.Module.Dropdown.Visible = false
+			self.UI.Module.Dropdown.Image = "http://www.roblox.com/asset/?id=6034818372" -- Default arrow
 			
 			self.Update = function(a)
 				self.Value = not self.Value
 				if not non then
-					self.UI.Module.TextColor3 = self.Value and Color3.fromHex("#6fecdd") or Color3.fromHex("#fff")
+					self.UI.Module.TextColor3 = self.Value and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 147, 0) -- Green when active, Orange when inactive
 				end
 				moduleTextLabel.Visible = self.Value
 				self.Root.Root.UI.ModulesList.Size += UDim2.new(0, 0, 0, 25 * (self.Value and 1 or -1))
@@ -123,6 +122,7 @@ local Category = {}; Category.__index = Category; do
 				
 				dropdowned = not dropdowned
 				self.UI.Dropdown.Visible = dropdowned
+				self.UI.Dropdown.BackgroundColor3 = Color3.fromRGB(50, 0, 50) -- Dark Purple
 				self.UI.Size += UDim2.new(0, 0, 0, (#self.UI.Dropdown.Frame:GetChildren() - 1) * 23 * (dropdowned and 1 or -1))
 				self.Root.UI.Size += UDim2.new(0, 0, 0, (#self.UI.Dropdown.Frame:GetChildren() - 1) * 23 * (dropdowned and 1 or -1))
 				self.Root.UI.List.Size += UDim2.new(0, 0, 0, (#self.UI.Dropdown.Frame:GetChildren() - 1) * 23 * (dropdowned and 1 or -1))
@@ -146,13 +146,15 @@ local Category = {}; Category.__index = Category; do
 			
 			local ui = objects.Toggle:Clone()
 			ui.Text = indent..title
+			ui.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
+			ui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			ui.Parent = self.UI.Dropdown.Frame
 			
 			self.UI.Dropdown.Size += UDim2.new(0, 0, 0, 23)
 			self.UI.Module.Dropdown.Visible = true
 			
 			data.Update = function()
-				ui.TextColor3 = data.Value and Color3.fromHex("#54fc54") or Color3.fromHex("#fc5454")
+				ui.TextColor3 = data.Value and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 69, 0) -- Green when on, Red when off
 			end
 			
 			ui.MouseButton1Click:Connect(function()
@@ -175,6 +177,8 @@ local Category = {}; Category.__index = Category; do
 
 			local ui = objects.Toggle:Clone()
 			ui.Text = indent..title
+			ui.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
+			ui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			ui.Parent = self.UI.Dropdown.Frame
 
 			self.UI.Dropdown.Size += UDim2.new(0, 0, 0, 23)
@@ -195,7 +199,8 @@ local Category = {}; Category.__index = Category; do
 			
 			local ui = objects.Bind:Clone()
 			ui.Text = indent..title..":"
-			ui.TextColor3 = Color3.fromRGB(255, 255, 255)
+			ui.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
+			ui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			ui.Parent = self.UI.Dropdown.Frame
 			
 			self.UI.Dropdown.Size += UDim2.new(0, 0, 0, 23)
@@ -230,6 +235,8 @@ local Category = {}; Category.__index = Category; do
 
 			local ui = objects.Switch:Clone()
 			ui.Text = indent..title
+			ui.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
+			ui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			ui.Parent = self.UI.Dropdown.Frame
 
 			self.UI.Dropdown.Size += UDim2.new(0, 0, 0, 23)
@@ -273,6 +280,9 @@ local Category = {}; Category.__index = Category; do
 
 			local ui = objects.Slider:Clone()
 			ui.Text.Text = indent..title
+			ui.Text.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
+			ui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
+			ui.Frame.BackgroundColor3 = Color3.fromRGB(128, 0, 128) -- Purple
 			ui.Parent = self.UI.Dropdown.Frame
 
 			self.UI.Dropdown.Size += UDim2.new(0, 0, 0, 23)
@@ -280,10 +290,8 @@ local Category = {}; Category.__index = Category; do
 
 			data.Update = function()
 				local percentage = (data.Value - range[1]) / (range[2] - range[1])
-				
 				ui.Text.Text = indent..title..": "..(math.round(data.Value * 100) / 100)
 				ui.Frame.Size = UDim2.new(percentage, 0, 1, 0)
-				
 				callback(data.Value)
 			end
 
@@ -333,10 +341,12 @@ local Category = {}; Category.__index = Category; do
 	function Category.new(title, icon, root)
 		local self = setmetatable({}, Category)
 		self.Title = title
-		self.Icon = icon
+		self.Icon = icon or "http://www.roblox.com/asset/?id=6035047409" -- Halloween Pumpkin Icon
 		self.UI = objects.Category:Clone()
-		self.UI.Title.Icon.Image = icon
+		self.UI.Title.Icon.Image = self.Icon
 		self.UI.Title.Title.Text = title
+		self.UI.Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
+		self.UI.Title.Title.TextColor3 = Color3.fromRGB(255, 147, 0) -- Orange
 		self.UI.Position += UDim2.new(0, 180 * #root.UI.Modules:GetChildren(), 0, 0)
 		self.UI.Parent = root.UI.Modules
 		self.Root = root
@@ -351,7 +361,7 @@ local Category = {}; Category.__index = Category; do
 		
 		do
 			local gui = self.UI
-
+			gui.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Background
 			local dragging
 			local dragInput
 			local dragStart
@@ -405,6 +415,7 @@ end
 function Bleachhack:Create()
 	local self = setmetatable({}, Bleachhack)
 	self.UI = objects.Bleachhack:Clone()
+	self.UI.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Halloween Background
 	self.UI.Parent = IS_STUDIO and player.PlayerGui or ((gethui and gethui()) or game:GetService("CoreGui"))
 	self.Categories = {}
 	
@@ -421,7 +432,7 @@ function Bleachhack:Create()
 	self.UI.ModulesList.List.Title.MouseButton1Click:Connect(toggleModules)
 	
 	runService.RenderStepped:Connect(function()
-		local chroma = getRainbowColor()
+		local chroma = getHalloweenColor()
 		local pingColor = valueToColor(ping * 500, 200)
 		local fpsColor = valueToColor2(fps, 60)
 		self.UI.ModulesList.Bar.BackgroundColor3 = chroma
@@ -441,7 +452,7 @@ function Bleachhack:Create()
 end
 
 function Bleachhack:CreateCategory(title, icon)
-	local category = Category.new(title, icon, self)
+	local category = Category.new(title, icon or "http://www.roblox.com/asset/?id=6035047409", self) -- Default to Halloween Pumpkin
 	self.Categories[title] = category
 	return category
 end
