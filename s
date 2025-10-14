@@ -415,7 +415,6 @@ end
 function Bleachhack:Create()
 	local self = setmetatable({}, Bleachhack)
 	self.UI = objects.Bleachhack:Clone()
-	self.UI.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark Halloween Background
 	self.UI.Parent = IS_STUDIO and player.PlayerGui or ((gethui and gethui()) or game:GetService("CoreGui"))
 	self.Categories = {}
 	
